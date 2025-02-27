@@ -2,4 +2,3 @@ node_modules/
 package-lock.json
 .env/
 frontend_jsx
-un_frontend
