@@ -1,19 +1,20 @@
 const express = require('express')
 const app = express()   
-// const dotenv = require('dotenv')   
+const dotenv = require('dotenv')   
 const databaseConnection = require('./src/config/db.js')    
 const userRoute = require('./src/routes/userRoute.js')  
+const authorRoute = require('./src/routes/authorRoute.js')
 const articleRoute = require('./src/routes/articleRoute.js') 
 const apiNewsRoute = require('./src/routes/apiNewsRoutes.js') 
   
 const session = require('express-session')             
-app.use(session({
-    secret: 'AbortController',  
-    resave: false,      
-    saveUninitialized: false,  
-    cookie: { secure: false }  
-}));
-// dotenv.config({ path: '.env' })
+// app.use(session({
+//     secret: 'AbortController',  
+//     resave: false,      
+//     saveUninitialized: false,  
+//     cookie: { secure: false }  
+// }));
+dotenv.config({ path: '.env' })
 databaseConnection();  
 const corsOptions = {
     path: '*'
@@ -24,21 +25,19 @@ app.use(express.json())
   
 //api
 app.use('/api/v1/user', userRoute);
+app.use('api/v1/author', authorRoute)
 app.use('/api/v1/article', articleRoute);
 app.use('/api/v1/news', apiNewsRoute)
-app.use(express.static('./public')) 
-app.use(express.static('./public/reader'))
-app.use(express.static('./public/writer'))
-app.use(express.static('./public/image'))
+// app.use(express.static('./public')) 
+// app.use(express.static('./public/reader'))
+// app.use(express.static('./public/writer'))
+// app.use(express.static('./public/image'))
 
 app.get('/home', (req, res) => {
-    res.status(200).json({
-        message: "we are on home page of Pulse Point..",
-        status: true
-    })
+    res.status(200).json({ message: "we are on home page of Pulse Point..", status: true })
 })
 
-app.listen(3000, (err) => {
+app.listen(process.env.PORT_NO, (err) => {
     if (err) console.log(err)
     else console.log("server is listening at port no 3000.....")
 })

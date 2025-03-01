@@ -1,27 +1,34 @@
-const Article = require('../models/article.model.js')
-const User = require('../models/user.model.js')
+const Article = require('../models/article.model.js');
+const Author  = require('../models/author.model.js');
+// const User = require('../models/user.model.js')
 
 const createArticle = async (req, res) => {
     try {
-        // console.log(req.body)
-        const { title, summary, content, tags, author, authorName } = req.body;
-        if (!title || !summary || !content || !tags || !author || !authorName) {
-            return res.status(401).json({
+        console.log(req.body)
+        const { title, description, content, tags, authorId, authorName, image } = req.body;
+        if (!title || !description || !content || !tags || !authorId || !authorName) {
+            return res.status(400).json({
                 message: "All fields are mandatory",
                 success: false
             })
         }
-        const obj = { title, summary, content, tags, author, authorName };
-        const createArticle = new Article(obj);
-        const articleCreated = await createArticle.save();
+        const obj = { title, summary, content, tags, author, authorName, ...(image && { image }) };
+        const articleCreated = await new Article(obj).save();
+
+        await Author.findByIdAndUpdate(authorId, { $push: { articles: articleCreated._id } })
 
         //console.log(articleCreated)
         return res.status(201).json({
             message: "Article created successfully...",
+            article: articleCreated,
             success: true
         })
     } catch (error) {
         console.log(error)
+        return res.status(500).json({
+            message: "Something went wrong",
+            success: false
+        });
     }
 }
 const editArticle = async (req, res) => {
@@ -42,6 +49,7 @@ const deleteArticle = async (req, res) => {
     try {
         const id = req.params.id;
         const article = await Article.findByIdAndDelete(id);
+        await Author.findByIdAndDelete()
         if (article) {
             console.log("article deleted successfully")
             return res.status(200).json({
@@ -55,10 +63,10 @@ const deleteArticle = async (req, res) => {
 }
 const authorAllArticles = async (req, res) => {
     try {
-        const id = req.params.id;
-        const articles = await Article.find({ author: id });
+        const authorId = req.params.id;  //author id
+        const articles = await Article.findById(authorId).populate("articles");
         return res.status(200).json({
-            articles: articles,
+            articles,
             success: true
         })
     } catch (error) {
@@ -67,10 +75,10 @@ const authorAllArticles = async (req, res) => {
 }
 const getAllArticles = async (req, res) => {
     try {
-        const articles = await Article.find();
-        //console.log(articles)
+        const allArticles = await Article.findById();
+        //console.log(allArticles)
         return res.status(200).json({
-            articles: articles
+            articles: allArticles
         })
     } catch (error) {
         console.log(error)
@@ -79,7 +87,7 @@ const getAllArticles = async (req, res) => {
 const getArticle = async (req, res) => {
     try {
         const id = req.query.id;
-       // console.log(id)
+        // console.log(id)
         const article = await Article.findById(id);
         //console.log(article)
         return res.status(200).json({
@@ -91,7 +99,7 @@ const getArticle = async (req, res) => {
 }
 const getFollowingArticles = async (req, res) => {
     try {
-        const id = req.params.id;
+        const id = req.params.id;  // user id
         const loggedInUser = await User.findById(id);
         const followingUserArticle = await Promise.all(loggedInUser.following.map((e) => {
             return Article.find({ author: e });

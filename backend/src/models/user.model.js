@@ -15,14 +15,14 @@ const userSchema = new mongoose.Schema(
             type: String,
             required: true
         },
+        profile: {
+            bio: { type: String },
+            profile: { type: String }
+        },
         role: {
             type: String,
             enum: ["user", "reader", "writer", "admin"],
             default: "user"
-        },
-        profile: {
-            bio: { type: String },
-            profile: { type: String }
         },
         gender: {
             type: String,
