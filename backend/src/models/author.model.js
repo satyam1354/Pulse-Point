@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const userSchema = new mongoose.Schema(
+const authorSchema = new mongoose.Schema(
     {
         name: {
             type: String,
@@ -8,17 +8,15 @@ const userSchema = new mongoose.Schema(
         },
         email: {
             type: String,
-            required: true,
-            unique: true
+            required: true
         },
         password: {
             type: String,
             required: true
         },
         role: {
-            type: String,
-            enum: ["user", "reader", "writer", "admin"],
-            default: "user"
+            enum: ["reader", "writer", "author", "admin"],
+            default: "reader"
         },
         profile: {
             bio: { type: String },
@@ -26,30 +24,29 @@ const userSchema = new mongoose.Schema(
         },
         gender: {
             type: String,
-            enum: ['male', 'famale', 'Prefer not to say'],
-            default: "Prefer not to say"
+            enum: ["Male", "Female", "Prefer not to say"],
+            default: "Prefer not to say",
         },
-        following: [
+        followers: [
             {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: 'Author'
+                ref: "User"
             }
         ],
-        savedArticle: [
-            {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "Article"
-            }
-        ],
-        myReads: [
+        myArticles: [
             {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: "Article"
             }
         ],
+        managedAuthors: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Author"
+            }
+        ]   // authors being managed by admin
     },
     { timestamps: true }
 )
-
-const User = mongoose.model('User', userSchema);
-module.exports = User
+export const Author = mongoose.model('Author', authorSchema)
+//module.exports = Author
