@@ -73,3 +73,10 @@ export const getAuthorProfile  = async(req, res) =>{
         console.log(error)
     }
 } 
+export const Logout = (req, res)=>{
+
+    return res.status(200).json({
+        message: "user logged out successfully",
+        success: true
+    })
+}

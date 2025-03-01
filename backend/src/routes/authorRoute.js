@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const {Register, Login} = require('../controllers/authorController.js')
+const {Register, Login, getAuthorProfile, Logout} = require('../controllers/authorController.js')
 // const { editArticle } = require('../controllers/articleController')
 
 router.route('/register').post(Register)
