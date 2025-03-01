@@ -15,7 +15,9 @@ app.use(session({
 }));
 // dotenv.config({ path: '.env' })
 databaseConnection();  
-
+const corsOptions = {
+    path: '*'
+}
 //middlewares
 app.use(express.urlencoded({ extended: true }))   
 app.use(express.json())
@@ -31,7 +33,7 @@ app.use(express.static('./public/image'))
 
 app.get('/home', (req, res) => {
     res.status(200).json({
-        message: "we are on home page",
+        message: "we are on home page of Pulse Point..",
         status: true
     })
 })
