@@ -5,14 +5,14 @@ const Author  = require('../models/author.model.js');
 const createArticle = async (req, res) => {
     try {
         console.log(req.body)
-        const { title, description, content, tags, authorId, authorName, image } = req.body;
+        const { title, description, content, image , video, tags,  authorId, authorName, action} = req.body;
         if (!title || !description || !content || !tags || !authorId || !authorName) {
             return res.status(400).json({
                 message: "All fields are mandatory",
                 success: false
             })
         }
-        const obj = { title, summary, content, tags, author, authorName, ...(image && { image }) };
+        const obj = { title, description, content, tags, ...(image && { image }), ...(video && {media: video }), authorId, authorName, status: action };
         const articleCreated = await new Article(obj).save();
 
         await Author.findByIdAndUpdate(authorId, { $push: { articles: articleCreated._id } })

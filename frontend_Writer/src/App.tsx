@@ -1,15 +1,16 @@
 // import { Container } from "postcss"
-import Container from './components/container'
-
+import Container from './components/Container'
+import {Toaster} from 'react-hot-toast'
 
 function App() {
 
   return (
     <>
-      <div className='bg-red-500'>
-        hellohhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
+      <div className='bg-red-200'>
+        hellohhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh authors
         </div>
         <Container/>
+        <Toaster/>
     </>
   )
 }
