@@ -5,16 +5,17 @@ import { useNavigate } from "react-router-dom";
 
 const Login = () => {
     const [admin, setAdmin] = useState<boolean>(false);
-    const [login, isLogin] = useState<boolean>(false)
+    const [isLogin, setIsLogin] = useState<boolean>(false)
 
     const [name, setName] = useState<string>("");
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("")
 
-    const submitHandler = async (e: any) => {
+    const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        console.log(name, email, password)
         console.log(e)
-        if (login) {
+        if (!isLogin) {
             try {
                 const response = await axios.post("http://localhost:3000/api/v1/author/register",
                     { name, password },
@@ -30,54 +31,65 @@ const Login = () => {
                     console.log(response.data)
                 }
                 else {
-                    toast.success(response.data.message)
+                    toast.error(response.data.message)
                     console.log("user does not exist")
                 }
             } catch (error) {
-                toast.success("Invalid Credentials")
+                toast.error("Invalid Credentials")
                 console.log(error)
             }
         }
-        else{
+        else {
             try {
-                const res = await axios.post("http://localhost:3000/api/v1/author/register", 
-                    { email, password},
-                    { 
-                        headers:{
-                            "Content-Type":"application/json"
+                const res = await axios.post("http://localhost:3000/api/v1/author/register",
+                    { email, password },
+                    {
+                        headers: {
+                            "Content-Type": "application/json"
                         },
                         withCredentials: true
                     }
                 );
                 console.log(res)
-                if(res.data.success){
+                if (res.data.success) {
                     toast.success(res.data.message)
-                }else{
-                    toast.success(res.data.message)
+                } else {
+                    toast.error(res.data.message)
                 }
             } catch (error) {
                 console.log(error)
-                toast.success("Invalid Credentials")
+                toast.error("Invalid Credentials")
             }
         }
     }
     return (
-        <div className="flex justify-center items-center w-[80%]">
-            <form onSubmit={submitHandler} className="flex flex-col">
-                { login && (<>
-                <label htmlFor="name" >Name</label>
-                <input type="text" className="border-2"  name="name"  id="name" required />
-                 </> )}
-                
-                <label htmlFor="email"  >Email</label>
-                <input type="email" className="border-2" name="email"  id="email" required />
+        <div className="w-screen h-screen bg-gray-200 flex justify-center items-center">
 
-                <label htmlFor="password">Password</label>
-                <input type="text" className="border-2" name="password" id="password" required />
+            <div className="flex flex-col justify-center items-center border rounded-2xl  w-[30%] bg-white">
+                <div className="font-bold text-3xl py-3">{isLogin ? "Signup Form" : "Login Form"}</div>
 
-                <button type="submit">Submit</button>
-            </form>
+                <form onSubmit={submitHandler} className="flex flex-col m-4 gap-3 w-[65%]">
+                    {isLogin && (<>
+                        <label htmlFor="name" className="font-bold text-lg">Name:</label>
+                        <input type="text" className="border border-gray-300 rounded-md p-[8px] text-lg  focus:border-blue-500 focus:outline-none focus:shadow-md focus:shadow-blue-300"
+                            name="name" value={name} onChange={(e) => setName(e.target.value)} id="name" placeholder="Enter your name..." required />
+                    </>)}
 
+                    <label htmlFor="email" className="font-bold text-lg" >Email:</label>
+                    <input type="email" className="border border-gray-300 rounded-md p-[8px] text-lg focus:border-blue-500 focus:outline-none focus:shadow-md focus:shadow-blue-300"
+                        name="email" value={email} onChange={((e) => setEmail(e.target.value))} id="email" placeholder="Enter your email..." required />
+
+                    <label htmlFor="password" className="font-bold text-mg">Password:</label>
+                    <input type="text" className="border border-gray-300 rounded-md  p-[8px] text-lg  focus:border-blue-500 focus:outline-none focus:shadow-md focus:shadow-blue-300"
+                        name="password" value={password} onChange={(e) => setPassword(e.target.value)} id="password" placeholder="Enter your password..." required />
+
+                    <button type="submit" className="border bg-blue-400 rounded-xl w-30 p-[8px] mx-auto cursor-pointer">Submit</button>
+
+                    <p className="mx-auto py-2 ">{isLogin ? "Already have an account? " : "Don't have an account? "}
+                        <a onClick={() => setIsLogin(!isLogin)} className="underline text-blue-700" href="#" >{isLogin ? "Login" : "Register"}</a></p>
+                </form>
+
+            </div>
         </div>
     )
 }

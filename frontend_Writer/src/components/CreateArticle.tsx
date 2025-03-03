@@ -1,6 +1,8 @@
 import { useState } from "react";
 import axios from 'axios';
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+// const Navigate = useNavigate();
 
 
 const CreateArticle = () => {
@@ -23,7 +25,7 @@ const CreateArticle = () => {
             if (video) Array.from(video).forEach((file) => formData.append("video", file));
             formData.append("tags", JSON.stringify(tags))
             formData.append("action", action)
-
+  console.log(formData)
             const response = await axios.post('http://localhost:3000/api/v1/article/createArticle', formData,
                 {
                     headers: {
@@ -35,6 +37,7 @@ const CreateArticle = () => {
             console.log(response.data)
             if (response.data.success) {
                 toast.success(response.data.message)
+                // Navigate('/dashboard');
             }
             else {
                 toast.error(response.data.message)
@@ -45,11 +48,11 @@ const CreateArticle = () => {
         }
     }
     return (
-        <div className="w-screen h-screen flex items-center justify-center mt-20">
-            <div className="w-[60%] ">
+        <div className="w-screen h-screen flex items-center justify-center mt-20  ">
+            <div className="w-[60%] p-10 bg-gray-100">
                 <h1 className="text-3xl font-bold">Write an Article</h1>
 
-                <form onSubmit={submitHandler} className="flex flex-col gap-4 mt-6" encType="multipart/form-data">
+                <form onSubmit={submitHandler} className="flex flex-col gap-4 mt-6 " encType="multipart/form-data">
 
                     <label htmlFor="title" className="font-bold text-mg">Title:</label>
                     <input type="text" name="title" className="border border-gray-300 rounded-md  p-2" value={title} onChange={(e) => setTitle(e.target.value)} id="title" placeholder="Enter article title" required />
@@ -70,8 +73,8 @@ const CreateArticle = () => {
                     <input type="text" name="tags" className="border border-gray-300 rounded-md  p-2" value={tags.join(", ")} onChange={(e) => setTags(e.target.value.split(",").map(tag => tag.trim()))} id="tags" placeholder="e.g. AI, Technology, future" />
 
                     <div className="py-4 ">
-                        <button className="border-2 px-2 py-1 rounded-lg bg-green-400 mr-4 cursor-pointer" type="submit" onClick={() => setAction('draft')}>Save Draft</button>
-                        <button className="border-2 px-2 py-1 rounded-lg bg-red-400 cursor-pointer" type="submit" onClick={() => setAction('publish')}>Publish</button>
+                        <button className="border border-gray-300 px-2 py-1 rounded-lg bg-yellow-400 mr-4 cursor-pointer" type="submit" onClick={() => setAction('draft')}>Save Draft</button>
+                        <button className="border border-gray-300 px-2 py-1 rounded-lg bg-green-500 cursor-pointer" type="submit" onClick={() => setAction('publish')}>Publish</button>
                     </div>
 
                 </form>
