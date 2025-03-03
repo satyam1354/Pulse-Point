@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()   
-const dotenv = require('dotenv')   
+const dotenv = require('dotenv') 
+const cors = require('cors')  
 const databaseConnection = require('./src/config/db.js')    
 const userRoute = require('./src/routes/userRoute.js')  
 const authorRoute = require('./src/routes/authorRoute.js')
@@ -17,8 +18,10 @@ const session = require('express-session')
 dotenv.config({ path: '.env' })
 databaseConnection();  
 const corsOptions = {
-    path: '*'
+    origin: '*',
+    credentials: true
 }
+app.use(cors(corsOptions))
 //middlewares
 app.use(express.urlencoded({ extended: true }))   
 app.use(express.json())
