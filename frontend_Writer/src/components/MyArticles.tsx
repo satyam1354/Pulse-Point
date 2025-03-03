@@ -30,17 +30,17 @@ const MyArticles = () => {
     }, []);
 
     return (
-        <div>
-            <div>
+        <div className="w-screen h-screen">
+            <div className="w-[80%] bg-gray-200 gap-3 m-4">
                 {article.length > 0 ? (
                     article.map((item, index) => (
-                        <div key={index}>
+                        <div key={index} className="border-2">
                             <h1>{item.title}</h1>
                             <h1>{item.description}</h1>
                         </div>
                     ))
                 ) : (
-                    <p>No Articles found..</p>
+                    <p className="border-2 text-xl text-red-400">No Articles found..</p>
                 )
                 }
 
