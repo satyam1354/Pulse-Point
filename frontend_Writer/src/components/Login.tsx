@@ -17,7 +17,7 @@ const Login = () => {
         console.log(e)
         if (!isLogin) {
             try {
-                const response = await axios.post("http://localhost:3000/api/v1/author/register",
+                const response = await axios.post(`${import.meta.env.VITE_AUTHOR_API_END_POINT}/login`,
                     { name, password },
                     {
                         headers: { 'content-type': 'application/json' },
@@ -41,7 +41,7 @@ const Login = () => {
         }
         else {
             try {
-                const res = await axios.post("http://localhost:3000/api/v1/author/register",
+                const res = await axios.post(`${import.meta.env.VITE_AUTHOR_API_END_POINT}/register`,
                     { email, password },
                     {
                         headers: {
