@@ -1,4 +1,6 @@
 const Author = require('../models/author.model.js')
+const bcryptjs = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 
 const Register = async (req, res) => {
     try {
@@ -13,15 +15,16 @@ const Register = async (req, res) => {
         const author = await Author.find({ email });
 
         if (author?.length > 0) {
-            console.log("runs");
             return res.status(409).json({
                 message: "Author user already exists...",
                 success: false
             })
         }
+        // const hashedPassword = await bcryptjs.hash(password, 16)
+
         // const obj = { ...(name && { name }), email, password }
         const obj = { ...(name && { name }), email, password, ...(profile && { 'profile.profile': profile }), ...(bio && { 'profile.bio': bio }) }
-        const createdAuthor = await Author.create(obj) //new Author(obj).save();
+        const createdAuthor = await Author.create(obj) // new Author(obj).save();
         console.log(createdAuthor)
 
         return res.status(201).json({
@@ -50,6 +53,9 @@ const Login = async (req, res) => {
                 success: false
             })
         }
+
+        // const isMatch = await bcryptjs.compare(password, author[0].password)
+
         // console.log(author)
         // console.log(author[0].password, " " , password)
         if (author[0].password != password) {
@@ -58,7 +64,12 @@ const Login = async (req, res) => {
                 success: false
             })
         }
-        return res.status(200).json({
+        const tokenData = { userId: author[0]._id, name: author[0].name };
+        const token = await jwt.sign({tokenData : tokenData} ,process.env.SECRET_TOKEN, { expiresIn: '1d' }) // { algorithm: 'RS256' },
+         
+        return res.status(200)
+        .cookie("token", token, {expiresIn : '1d', httpOnly: true} )
+        .json({
             message: "Author user logged in successfully...",
             author,
             success: true

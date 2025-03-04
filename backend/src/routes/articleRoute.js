@@ -1,6 +1,7 @@
 const express = require('express')
 const Router = express.Router();
 const { createArticle, deleteArticle ,editArticle,authorAllArticles, getAllArticles, getArticle, getFollowingArticles} = require('../controllers/articleController.js')
+const isAuthenticated = require('../config/auth.js')
 
 Router.route('/createArticle').post(createArticle)
 Router.route('/delete/:id').get(deleteArticle)

@@ -25,6 +25,7 @@ const Login = () => {
                         withCredentials: true
                     }
                 );
+                console.log(document.cookie)
                 console.log(response)
                 if (response.data.success) {
                     toast.success(response.data.message)

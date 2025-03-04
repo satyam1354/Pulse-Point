@@ -15,7 +15,7 @@ const createArticle = async (req, res) => {
         const obj = { title, description, content, tags, ...(image && { image }), ...(video && {media: video }), authorId, authorName, status: action };
         const articleCreated = await new Article(obj).save();
 
-        await Author.findByIdAndUpdate(authorId, { $push: { articles: articleCreated._id } })
+       // await Author.findByIdAndUpdate(authorId, { $push: { articles: articleCreated._id } })
 
         //console.log(articleCreated)
         return res.status(201).json({
