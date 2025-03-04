@@ -25,9 +25,9 @@ const CreateArticle = () => {
             if (video) Array.from(video).forEach((file) => formData.append("video", file));
             formData.append("tags", JSON.stringify(tags))
             formData.append("action", action)
-  console.log(formData)
-            const response = await axios.post('http://localhost:3000/api/v1/article/createArticle', formData,
-                {
+             console.log(formData)
+            const response = await axios.post(`${import.meta.env.VITE_ARTICLE_API_END_POINT}/createArticle`,  formData,
+                { //'http://localhost:3000/api/v1/article/createArticle', 
                     headers: {
                         'Content-Type': 'multipart/form-data',
                     },

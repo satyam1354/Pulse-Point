@@ -1,7 +1,7 @@
 const User = require('../models/user.model.js')
 const Author = require('../models/author.model.js')
 
-export const Register = async (req, res) => {
+const Register = async (req, res) => {
     try {
         console.log(req.body)
 
@@ -34,7 +34,7 @@ export const Register = async (req, res) => {
     }
 }
 
-export const Login = async (req, res) => {
+ const Login = async (req, res) => {
     try {
         const { email, password } = req.body;
         if (!email || !password) {
@@ -70,7 +70,7 @@ export const Login = async (req, res) => {
     }
 }
 
-export const Logout = (req, res) => {
+ const Logout = (req, res) => {
     req.session.destroy();
     res.clearCookie('connect-sid') //clear the session cookie 
     console.log(req.session)
@@ -79,7 +79,7 @@ export const Logout = (req, res) => {
         success: true
     })
 }
-export const getMyProfile = async (req, res) => {
+ const getMyProfile = async (req, res) => {
     try {
         const id = req.params.id;
         const user = await User.findById(id).select("-password")
@@ -90,7 +90,7 @@ export const getMyProfile = async (req, res) => {
         console.log(error)
     }
 }
-export const bookmark = async (req, res) => {
+ const bookmark = async (req, res) => {
     try {
         const articleId = req.params.id;
         const loggedInUserId = req.body.id;
@@ -114,7 +114,7 @@ export const bookmark = async (req, res) => {
         console.log(error)
     }
 }
-export const follow = async (req, res) => {
+ const follow = async (req, res) => {
     try {
         const loggedInUserId = req.body.id;
         const authorId = req.params.id;
@@ -139,7 +139,7 @@ export const follow = async (req, res) => {
 
 }
 
-export const myReads = async (req, res) => {
+ const myReads = async (req, res) => {
     try {
         const id = req.params.id;
         const myReads = await User.findById(id).select("-password -email -name - followers -bookmark")
@@ -151,7 +151,7 @@ export const myReads = async (req, res) => {
         console.log(error)
     }
 }
-export const addToReads = async (req, res) => {
+ const addToReads = async (req, res) => {
     try {
         const { userId } = req.body;
         const articleId = req.params.id;
@@ -171,11 +171,13 @@ export const addToReads = async (req, res) => {
         console.log(error)
     }
 }
-// module.exports = {
-//     Register,
-//     Login,
-//     Logout,
-//     getMyProfile,
-//     bookmark,
-//     follow
-// }
+module.exports = {
+    Register,
+    Login,
+    Logout,
+    getMyProfile,
+    bookmark,
+    follow,
+    myReads,
+    addToReads
+}

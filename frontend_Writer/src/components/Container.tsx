@@ -5,9 +5,9 @@ import MyArticles from '../components/MyArticles';
 const Container = ()=>{
     return(
     <div>
-    <Login/>
+    {/* <Login/> */}
     <hr/>
-    {/* <CreateArticle/> */}
+    <CreateArticle/>
     </div>
 
     )

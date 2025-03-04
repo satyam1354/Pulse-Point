@@ -6,7 +6,7 @@ const databaseConnection = require('./src/config/db.js')
 const userRoute = require('./src/routes/userRoute.js')  
 const authorRoute = require('./src/routes/authorRoute.js')
 const articleRoute = require('./src/routes/articleRoute.js') 
-const apiNewsRoute = require('./src/routes/apiNewsRoutes.js') 
+ const apiNewsRoute = require('./src/routes/apiNewsRoutes.js') 
   
 const session = require('express-session')             
 // app.use(session({
@@ -18,7 +18,7 @@ const session = require('express-session')
 dotenv.config({ path: '.env' })
 databaseConnection();  
 const corsOptions = {
-    origin: '*',
+    origin: 'http://localhost:5173',
     credentials: true
 }
 app.use(cors(corsOptions))
@@ -28,9 +28,9 @@ app.use(express.json())
   
 //api
 app.use('/api/v1/user', userRoute);
-app.use('api/v1/author', authorRoute)
+app.use('/api/v1/author', authorRoute)
 app.use('/api/v1/article', articleRoute);
-app.use('/api/v1/news', apiNewsRoute)
+// app.use('/api/v1/news', apiNewsRoute)
 // app.use(express.static('./public')) 
 // app.use(express.static('./public/reader'))
 // app.use(express.static('./public/writer'))

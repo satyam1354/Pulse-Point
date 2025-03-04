@@ -13,36 +13,35 @@ const Login = () => {
 
     const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(name, email, password)
-        console.log(e)
+        // console.log(name, email, password)
+        // console.log(e)
         if (!isLogin) {
             try {
+                // console.log(import.meta.env.VITE_AUTHOR_API_END_POINT)
                 const response = await axios.post(`${import.meta.env.VITE_AUTHOR_API_END_POINT}/login`,
-                    { name, password },
+                    { email, password },
                     {
                         headers: { 'content-type': 'application/json' },
                         withCredentials: true
                     }
                 );
-                console.log(response.data)
+                console.log(response)
                 if (response.data.success) {
                     toast.success(response.data.message)
-                    console.log("loged in successsfully");
-                    console.log(response.data)
                 }
                 else {
                     toast.error(response.data.message)
-                    console.log("user does not exist")
                 }
-            } catch (error) {
-                toast.error("Invalid Credentials")
-                console.log(error)
+            } catch (error:any) {
+                toast.error(error.response?.data?.message)
+                //toast.error("Invalid credentials..")
+                console.log(error.response)
             }
         }
         else {
             try {
-                const res = await axios.post(`${import.meta.env.VITE_AUTHOR_API_END_POINT}/register`,
-                    { email, password },
+                const res = await axios.post(`${import.meta.env.VITE_AUTHOR_API_END_POINT}/register`,    
+                    { name, email, password },
                     {
                         headers: {
                             "Content-Type": "application/json"
@@ -56,9 +55,11 @@ const Login = () => {
                 } else {
                     toast.error(res.data.message)
                 }
-            } catch (error) {
-                console.log(error)
-                toast.error("Invalid Credentials")
+            } catch (error:any) {
+                //   console.log("error", error)
+                console.log(error);
+                toast.error(error.response?.data?.message)
+               // toast.error("Invalid Credentials")
             }
         }
     }

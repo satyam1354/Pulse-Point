@@ -15,6 +15,7 @@ const authorSchema = new mongoose.Schema(
             required: true
         },
         role: {
+            type:String,
             enum: ["reader", "writer", "author", "admin"],
             default: "reader"
         },
@@ -48,5 +49,5 @@ const authorSchema = new mongoose.Schema(
     },
     { timestamps: true }
 )
-export const Author = mongoose.model('Author', authorSchema)
-//module.exports = Author
+ const Author = mongoose.model('Author', authorSchema)
+module.exports = Author
