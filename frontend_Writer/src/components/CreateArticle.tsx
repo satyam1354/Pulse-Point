@@ -2,10 +2,10 @@ import { useState } from "react";
 import axios from 'axios';
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-// const Navigate = useNavigate();
 
 
 const CreateArticle = () => {
+    const navigate = useNavigate()
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("")
     const [content, setContent] = useState<string>("")
@@ -37,7 +37,7 @@ const CreateArticle = () => {
             console.log(response.data)
             if (response.data.success) {
                 toast.success(response.data.message)
-                // Navigate('/dashboard');
+                navigate('/home');
             }
             else {
                 toast.error(response.data.message)

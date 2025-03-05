@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+    const navigate = useNavigate()
     const [admin, setAdmin] = useState<boolean>(false);
     const [isLogin, setIsLogin] = useState<boolean>(false)
 
@@ -29,6 +30,7 @@ const Login = () => {
                 console.log(response)
                 if (response.data.success) {
                     toast.success(response.data.message)
+                    navigate('home');
                 }
                 else {
                     toast.error(response.data.message)
