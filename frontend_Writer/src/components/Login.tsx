@@ -2,8 +2,10 @@ import { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { useAuthor } from '../context/AuthorContext'
 
 const Login = () => {
+    const { loginAuthor } = useAuthor()
     const navigate = useNavigate()
     const [admin, setIsAdmin] = useState<boolean>(false);
     const [isLogin, setIsLogin] = useState<boolean>(false)
@@ -26,8 +28,11 @@ const Login = () => {
                         withCredentials: true
                     }
                 );
-                console.log(document.cookie)
+                //console.log(document.cookie)
                 console.log(response)
+                const authorData = response.data;
+                loginAuthor(authorData)
+
                 if (response.data.success) {
                     toast.success(response.data.message)
                     navigate('/home');

@@ -4,6 +4,7 @@ import CreateArticle from '../components/CreateArticle';
 import MyArticles from '../components/MyArticles';
 import Home from './HomePage/Home';
 import Article, {ArticleLoader} from './Article';
+import { useAuthor} from '../context/AuthorContext'
 
 const router = createBrowserRouter([
     {
@@ -33,6 +34,7 @@ const router = createBrowserRouter([
     }
 ])
 const Container = () => {
+    const { author } = useAuthor()
     return (
         <div>
             {/* <Routes>

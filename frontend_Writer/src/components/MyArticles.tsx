@@ -10,6 +10,7 @@ type Article = {
     createdAt: string
 }
 const MyArticles = () => {
+    const { authorId } = useAuthor()
     const [article, setArticle] = useState<Article[]>([]);
 
     useEffect(() => {
