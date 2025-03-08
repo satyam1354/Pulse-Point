@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()   
 const dotenv = require('dotenv') 
 const cors = require('cors')  
+const cookieParser = require('cookie-parser')
 const databaseConnection = require('./src/config/db.js')    
 const userRoute = require('./src/routes/userRoute.js')  
 const authorRoute = require('./src/routes/authorRoute.js')
@@ -22,6 +23,7 @@ const corsOptions = {
     credentials: true
 }
 app.use(cors(corsOptions))
+app.use(cookieParser())
 //middlewares
 app.use(express.urlencoded({ extended: true }))   
 app.use(express.json())

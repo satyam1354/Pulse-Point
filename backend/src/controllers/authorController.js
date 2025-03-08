@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken')
 
 const Register = async (req, res) => {
     try {
+        console.log(req.files)
         console.log(req.body)
         const { name, email, password, bio, profile } = req.body;
         if (!email || !password) {
@@ -65,8 +66,8 @@ const Login = async (req, res) => {
             })
         }
         const tokenData = { userId: author[0]._id, name: author[0].name };
-        const token = await jwt.sign({tokenData : tokenData} ,process.env.SECRET_TOKEN, { expiresIn: '1d' }) // { algorithm: 'RS256' },
-         
+        const token =  jwt.sign({tokenData : tokenData} ,process.env.SECRET_TOKEN, { expiresIn: '1d' }) // { algorithm: 'RS256' },
+           console.log(token)
         return res.status(200)
         .cookie("token", token, {expiresIn : '1d', httpOnly: true} )
         .json({

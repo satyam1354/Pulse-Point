@@ -1,16 +1,21 @@
 // import { Container } from "postcss"
+import { BrowserRouter } from 'react-router-dom'
 import Container from './components/Container'
-import {Toaster} from 'react-hot-toast'
+import { Toaster } from 'react-hot-toast'
+import { createContext, useState } from 'react'
+import {AuthorProvider} from './context/AuthorContext'
 
 function App() {
 
   return (
     <>
-      {/* <div className='bg-red-200'>
-        hellohhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh authors
-        </div> */}
-        <Container/>
-        <Toaster/>
+      <AuthorProvider>
+        {/* <BrowserRouter> */}
+        <Container />
+        <Toaster />
+        {/* </BrowserRouter> */}
+      </AuthorProvider>
+
     </>
   )
 }

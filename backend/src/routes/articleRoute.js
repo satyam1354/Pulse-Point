@@ -1,14 +1,19 @@
 const express = require('express')
 const Router = express.Router();
-const { createArticle, deleteArticle ,editArticle,authorAllArticles, getAllArticles, getArticle, getFollowingArticles} = require('../controllers/articleController.js')
+const { createArticle, deleteArticle ,editArticle,authorAllArticles, getAllArticles, getArticle, getFollowingAuthorArticles} = require('../controllers/articleController.js')
 const isAuthenticated = require('../config/auth.js')
 
-Router.route('/createArticle').post(createArticle)
-Router.route('/delete/:id').get(deleteArticle)
-Router.route('/editarticle/:id').get(editArticle)
-Router.route('/authorarticles/:id').get(authorAllArticles)
-Router.route('/getallarticles').get(getAllArticles)
-Router.route('/getarticle').get(getArticle)
-Router.route('/getfollowingarticles/:id').get(getFollowingArticles)
+// routes for author  calling
+Router.route('/createArticle').post(isAuthenticated, createArticle)
+Router.route('/deleteArticle/:id').get(deleteArticle)
+Router.route('/editArticle/:id').get(editArticle)
+Router.route('/getMyArticles/:id').get(authorAllArticles)
+Router.route('/myArticle/:id').get(getArticle)
+
+// routes for user calling
+Router.route('/authorAllArticles/:id').get(authorAllArticles)
+Router.route('/getArticle/:id').get(getArticle)
+Router.route('/getAllArticles').get(getAllArticles)
+Router.route('/getFollowingAuthorArticles/:id').get(getFollowingAuthorArticles)
 
 module.exports = Router; 

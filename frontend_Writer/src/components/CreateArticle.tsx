@@ -17,33 +17,39 @@ const CreateArticle = () => {
     const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
+            console.log(title, description, content, image, video, tags, action);
             const formData = new FormData();
             formData.append("title", title);
             formData.append("description", description);
             formData.append("content", content);
-            if (image) Array.from(image).forEach((pic) => formData.append("image", pic));
-            if (video) Array.from(video).forEach((file) => formData.append("video", file));
+            // if (image && image.length > 0) {
+            //     Array.from(image).forEach((pic) => formData.append("image", pic));
+            // }
+            // if (video && video.length > 0) 
+            //     Array.from(video).forEach((file) => formData.append("video", file));
             formData.append("tags", JSON.stringify(tags))
             formData.append("action", action)
-             console.log(formData)
-            const response = await axios.post(`${import.meta.env.VITE_ARTICLE_API_END_POINT}/createArticle`,  formData,
-                { //'http://localhost:3000/api/v1/article/createArticle', 
+            for (let pair of formData.entries()) {
+                console.log(pair[0], pair[1]);
+            }
+            console.log(formData)
+
+            const response = await axios.post(`${import.meta.env.VITE_ARTICLE_API_END_POINT}/createArticle`, formData,
+                {
                     headers: {
-                        'Content-Type': 'multipart/form-data',
+                        'Content-Type':  'multipart/form-data',
                     },
                     withCredentials: true
                 }
             );
             console.log(response.data)
             if (response.data.success) {
-                toast.success(response.data.message)
                 navigate('/home');
+                toast.success(response.data.message)
             }
-            else {
-                toast.error(response.data.message)
-            }
-        } catch (error) {
-            toast.error("Article not created")
+        } catch (error: any) {
+            toast.error(error.response?.data.message)
+            //toast.error("Article not created")
             console.log(error)
         }
     }

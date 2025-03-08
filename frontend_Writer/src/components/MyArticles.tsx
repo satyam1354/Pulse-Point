@@ -1,9 +1,13 @@
 import axios from "axios"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
+import {  NavLink} from "react-router-dom";
+import { useAuthor } from "../context/AuthorContext";
 
 type Article = {
     title: string;
     description: string;
+    _id: string,
+    createdAt: string
 }
 const MyArticles = () => {
     const [article, setArticle] = useState<Article[]>([]);
@@ -12,12 +16,12 @@ const MyArticles = () => {
         const loadData = async () => {
             try {
                 //const token = localStorage.get('token'); //it will be sent during login 
-                const response = await axios.get<{articles: Article[]}>(`${import.meta.env.VITE_ARTICLE_API_END_POINT}/getMyArticles`,
+                const response = await axios.get<{articles: Article[]}>(`${import.meta.env.VITE_ARTICLE_API_END_POINT}/getMyArticles/67c6a111ce1c1c10ae4603f6`,
                     {
-                        // headers: {
-                        //     Authorization: `Bearer ${token}`,
-                        // }
-                        withCredentials: true //If the token’s in cookies instead:
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        withCredentials: true 
                     }
                 );
                 console.log(response.data)
@@ -31,12 +35,14 @@ const MyArticles = () => {
 
     return (
         <div className="w-screen h-screen">
-            <div className="w-[80%] bg-gray-200 gap-3 m-4">
+            <div className="w-[80%] bg-gray-200 gap-5 m-5">
                 {article.length > 0 ? (
                     article.map((item, index) => (
-                        <div key={index} className="border-2">
-                            <h1>{item.title}</h1>
+                        <div key={index} className="border-2 m-5 p-4">
+                            <NavLink to={`/myArticle/${item._id}`}>{item.title}</NavLink>
                             <h1>{item.description}</h1>
+                            <div>{item.createdAt}</div>
+
                         </div>
                     ))
                 ) : (

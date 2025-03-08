@@ -32,12 +32,12 @@ const articleSchema = new mongoose.Schema(
         tags: [String],
         category: { type: String },
 
-        image: { type: String }, // main image URL
+        image: [{ type: String }], // main image URL
         media: [{ type: String }], // additional media URLs
 
         status: {
             type: String,
-            enum: ['draft', 'published', 'archived'],
+            enum: ['draft', 'publish', 'archived'],
             default: 'draft'
         },
 

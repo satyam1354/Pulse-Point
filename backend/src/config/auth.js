@@ -5,8 +5,10 @@ dotenv.config({ path: '../config/.env' })
 
 const isAuthenticated = async (req, res, next) => {
     try {
+        console.log("token in  cookies ss ")
+        // console.log(req.cookies)
         const token = req.cookies.token;
-        console.log(token)
+        // console.log("token," ,token)
         if (!token) {
             return res.status(401).json({
                 message: "User not authenticated..",
@@ -15,7 +17,8 @@ const isAuthenticated = async (req, res, next) => {
         }
         const decoded = jwt.verify(token, process.env.SECRET_TOKEN)
         console.log('decoded', decoded);
-        req.user = decoded.userId;
+        req.userId = decoded.tokenData.userId;
+        req.name = decoded.tokenData.name;
         next();
 
     } catch (error) {

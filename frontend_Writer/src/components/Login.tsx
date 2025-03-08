@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 const Login = () => {
     const navigate = useNavigate()
-    const [admin, setAdmin] = useState<boolean>(false);
+    const [admin, setIsAdmin] = useState<boolean>(false);
     const [isLogin, setIsLogin] = useState<boolean>(false)
 
     const [name, setName] = useState<string>("");
@@ -30,7 +30,7 @@ const Login = () => {
                 console.log(response)
                 if (response.data.success) {
                     toast.success(response.data.message)
-                    navigate('home');
+                    navigate('/home');
                 }
                 else {
                     toast.error(response.data.message)
@@ -54,6 +54,7 @@ const Login = () => {
                 );
                 console.log(res)
                 if (res.data.success) {
+                    navigate('/login')
                     toast.success(res.data.message)
                 } else {
                     toast.error(res.data.message)
